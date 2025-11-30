@@ -12,9 +12,6 @@ def emotion_detector(text):
         Returns: 
           A dictionary with emotion names as keys and emotion scores as values
     """
-    if text is None or text.strip() == "":
-        return None
-    
     payload = {"raw_document": {"text": text}}
 
     response = requests.post(
