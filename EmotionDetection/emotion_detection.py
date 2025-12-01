@@ -1,3 +1,4 @@
+from collections import defaultdict
 import json
 import requests
 
@@ -18,18 +19,19 @@ def emotion_detector(text):
         URL,
         headers = HEADERS,
         json = payload)
-    
-    if (response.status_code != 200):
-        return None
+
+    if (response.status_code == 400):
+        return defaultdict(lambda: None)
     
     formatted_response = json.loads(response.text)
     predictions = formatted_response['emotionPredictions']
     if (len(predictions) == 0): 
-        return None
+        return defaultdict(lambda: None)
     
     emotions = predictions[0]['emotion']
     emotions['dominant_emotion'] = _get_dominant_emotion(emotions)
     return emotions
+
 
 def _get_dominant_emotion(emotions):
     """Returns the emotion with the highest score.
